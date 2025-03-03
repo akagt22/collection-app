@@ -3,36 +3,39 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 76;
 	objects = {
-
-/* Begin PBXBuildFile section */
-		124CFD9B2D38FD9B00764EB6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124CFD9A2D38FD9B00764EB6 /* AppDelegate.swift */; };
-		124CFD9D2D38FD9B00764EB6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124CFD9C2D38FD9B00764EB6 /* SceneDelegate.swift */; };
-		124CFDA22D38FD9B00764EB6 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 124CFDA12D38FD9B00764EB6 /* Base */; };
-		124CFDA42D38FDA000764EB6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 124CFDA32D38FDA000764EB6 /* Assets.xcassets */; };
-		124CFDA72D38FDA000764EB6 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 124CFDA62D38FDA000764EB6 /* Base */; };
-		124CFDB32D39049900764EB6 /* CollectionPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124CFDAE2D39049900764EB6 /* CollectionPresenter.swift */; };
-		124CFDB42D39049900764EB6 /* CollectionRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124CFDAF2D39049900764EB6 /* CollectionRouter.swift */; };
-		124CFDB52D39049900764EB6 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124CFDB02D39049900764EB6 /* CollectionViewController.swift */; };
-		124CFDB62D39049900764EB6 /* CollectionInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124CFDB12D39049900764EB6 /* CollectionInteractor.swift */; };
-		129666CB2D48D05B00B66BD8 /* CollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129666CA2D48D05B00B66BD8 /* CollectionCell.swift */; };
-/* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		124CFD972D38FD9B00764EB6 /* CollectionApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CollectionApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		124CFD9A2D38FD9B00764EB6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		124CFD9C2D38FD9B00764EB6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		124CFDA12D38FD9B00764EB6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/CollectionViewController.storyboard; sourceTree = "<group>"; };
-		124CFDA32D38FDA000764EB6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		124CFDA62D38FDA000764EB6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		124CFDA82D38FDA000764EB6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		124CFDAE2D39049900764EB6 /* CollectionPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionPresenter.swift; sourceTree = "<group>"; };
-		124CFDAF2D39049900764EB6 /* CollectionRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionRouter.swift; sourceTree = "<group>"; };
-		124CFDB02D39049900764EB6 /* CollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
-		124CFDB12D39049900764EB6 /* CollectionInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionInteractor.swift; sourceTree = "<group>"; };
-		129666CA2D48D05B00B66BD8 /* CollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		12B8B4B12D75944E0056F218 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				/Localized/Collection/CollectionViewController.storyboard,
+				/Localized/LaunchScreen.storyboard,
+				Info.plist,
+			);
+			target = 124CFD962D38FD9B00764EB6 /* CollectionApp */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		12B8B4B22D75944E0056F218 /* PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 124CFD952D38FD9B00764EB6 /* Resources */;
+			membershipExceptions = (
+				Base.lproj/LaunchScreen.storyboard,
+				Collection/Base.lproj/CollectionViewController.storyboard,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		12B8B4A32D75944E0056F218 /* CollectionApp */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (12B8B4B12D75944E0056F218 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 12B8B4B22D75944E0056F218 /* PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = CollectionApp; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		124CFD942D38FD9B00764EB6 /* Frameworks */ = {
@@ -45,23 +48,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		122769312D3A1B0000C95A34 /* Collection */ = {
-			isa = PBXGroup;
-			children = (
-				129666CA2D48D05B00B66BD8 /* CollectionCell.swift */,
-				124CFDAE2D39049900764EB6 /* CollectionPresenter.swift */,
-				124CFDAF2D39049900764EB6 /* CollectionRouter.swift */,
-				124CFDB12D39049900764EB6 /* CollectionInteractor.swift */,
-				124CFDB02D39049900764EB6 /* CollectionViewController.swift */,
-				124CFDA02D38FD9B00764EB6 /* CollectionViewController.storyboard */,
-			);
-			path = Collection;
-			sourceTree = "<group>";
-		};
 		124CFD8E2D38FD9B00764EB6 = {
 			isa = PBXGroup;
 			children = (
-				124CFD992D38FD9B00764EB6 /* CollectionApp */,
+				12B8B4A32D75944E0056F218 /* CollectionApp */,
 				124CFD982D38FD9B00764EB6 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -72,19 +62,6 @@
 				124CFD972D38FD9B00764EB6 /* CollectionApp.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		124CFD992D38FD9B00764EB6 /* CollectionApp */ = {
-			isa = PBXGroup;
-			children = (
-				124CFD9A2D38FD9B00764EB6 /* AppDelegate.swift */,
-				124CFD9C2D38FD9B00764EB6 /* SceneDelegate.swift */,
-				124CFDA32D38FDA000764EB6 /* Assets.xcassets */,
-				124CFDA52D38FDA000764EB6 /* LaunchScreen.storyboard */,
-				124CFDA82D38FDA000764EB6 /* Info.plist */,
-				122769312D3A1B0000C95A34 /* Collection */,
-			);
-			path = CollectionApp;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -101,6 +78,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				12B8B4A32D75944E0056F218 /* CollectionApp */,
 			);
 			name = CollectionApp;
 			productName = CollectionApp;
@@ -123,7 +103,6 @@
 				};
 			};
 			buildConfigurationList = 124CFD922D38FD9B00764EB6 /* Build configuration list for PBXProject "CollectionApp" */;
-			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -131,6 +110,7 @@
 				Base,
 			);
 			mainGroup = 124CFD8E2D38FD9B00764EB6;
+			preferredProjectObjectVersion = 56;
 			productRefGroup = 124CFD982D38FD9B00764EB6 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -145,9 +125,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				124CFDA42D38FDA000764EB6 /* Assets.xcassets in Resources */,
-				124CFDA72D38FDA000764EB6 /* Base in Resources */,
-				124CFDA22D38FD9B00764EB6 /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,36 +135,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				124CFD9B2D38FD9B00764EB6 /* AppDelegate.swift in Sources */,
-				124CFDB32D39049900764EB6 /* CollectionPresenter.swift in Sources */,
-				124CFDB42D39049900764EB6 /* CollectionRouter.swift in Sources */,
-				124CFDB52D39049900764EB6 /* CollectionViewController.swift in Sources */,
-				129666CB2D48D05B00B66BD8 /* CollectionCell.swift in Sources */,
-				124CFDB62D39049900764EB6 /* CollectionInteractor.swift in Sources */,
-				124CFD9D2D38FD9B00764EB6 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		124CFDA02D38FD9B00764EB6 /* CollectionViewController.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				124CFDA12D38FD9B00764EB6 /* Base */,
-			);
-			name = CollectionViewController.storyboard;
-			sourceTree = "<group>";
-		};
-		124CFDA52D38FDA000764EB6 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				124CFDA62D38FDA000764EB6 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		124CFDA92D38FDA000764EB6 /* Debug */ = {
@@ -317,11 +268,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8T58P6T7AX;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CollectionApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = CollectionViewController;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
@@ -346,11 +298,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8T58P6T7AX;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CollectionApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = CollectionViewController;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;

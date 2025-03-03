@@ -5,6 +5,8 @@
 //  Created by Okamoto Akihiro on 2025/01/16.
 //
 
+import Foundation
+
 // MARK: Presentation (View -> Presenter)
 
 protocol CollectionPresentation: AnyObject {
@@ -19,6 +21,7 @@ protocol CollectionPresentation: AnyObject {
     // MARK: func
     
     func collectionContent(index: Int) -> String
+    func dragAndDrop(dragPosition: IndexPath, dropPosition: IndexPath, data: String)
     func plusCellDidTap()
     func indexOfPlusCell() -> Int
     func numberOfCells() -> Int
@@ -31,6 +34,7 @@ protocol CollectionInteractorOutput: AnyObject {}
 // MARK: Presentation (View -> Presenter)
 
 class CollectionPresenter: CollectionPresentation {
+
     // MARK: VIPER Properties
 
     weak var view: CollectionView?
@@ -51,6 +55,13 @@ class CollectionPresenter: CollectionPresentation {
     
     func collectionContent(index: Int) -> String {
         interactor.collectionContent(index: index)
+    }
+    
+    func dragAndDrop(dragPosition: IndexPath, dropPosition: IndexPath, data: String) {
+        interactor.removeCollectionContent(at: dragPosition.row)
+        interactor.insertCollectionContent(data: data, at: dropPosition.row)
+        view?.deleteCollectionItems(at: [dragPosition])
+        view?.insertCollectionItems(at: [dropPosition])
     }
     
     func plusCellDidTap() {

@@ -18,6 +18,8 @@ protocol CollectionUseCase: AnyObject {
     func collectionArrayCount() -> Int
     func collectionContent(index: Int) -> String
     func indexOfPlusCell() -> Int
+    func insertCollectionContent(data: String, at row: Int)
+    func removeCollectionContent(at row: Int)
 }
 
 // MARK: UseCase (Presenter -> Interactor)
@@ -38,7 +40,6 @@ class CollectionInteractor: CollectionUseCase {
     // MARK: deinit
 
     // MARK: func
-    
     func addCollectionContent() {
         collectionArray.insert(String(collectionArray.count), at: collectionArrayCount() - 1)
     }
@@ -53,6 +54,14 @@ class CollectionInteractor: CollectionUseCase {
     
     func indexOfPlusCell() -> Int {
         return collectionArray.count - 1
+    }
+    
+    func insertCollectionContent(data: String, at row: Int) {
+        collectionArray.insert(data, at: row)
+    }
+    
+    func removeCollectionContent(at row: Int) {
+        collectionArray.remove(at: row)
     }
 }
 

@@ -16,6 +16,8 @@ protocol CollectionView: AnyObject {
 
     // MARK: func
     
+    func deleteCollectionItems(at indexPathArray:[IndexPath])
+    func insertCollectionItems(at indexPathArray:[IndexPath])
     func reloadCollectionViewData()
 }
 
@@ -91,6 +93,14 @@ extension CollectionViewController: CollectionView {
     func reloadCollectionViewData() {
         collectionView.reloadData()
     }
+    
+    func insertCollectionItems(at indexPathArray: [IndexPath]) {
+        collectionView.insertItems(at: indexPathArray)
+    }
+    
+    func deleteCollectionItems(at indexPathArray: [IndexPath]) {
+        collectionView.deleteItems(at: indexPathArray)
+    }
 }
 
 extension CollectionViewController: UICollectionViewDataSource {
@@ -125,8 +135,10 @@ extension CollectionViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+// ドラッグの設定
 extension CollectionViewController: UICollectionViewDragDelegate {
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        // 「+」のセルはドラッグ不可
         if indexPath.row >= presenter.indexOfPlusCell() { return [] }
         let dragItem = UIDragItem(itemProvider: NSItemProvider())
         // アプリ内完結ならlocalObject。アプリ外にdrag&dropするならNSItemProvider(object:)に渡す値を入れる
@@ -135,12 +147,50 @@ extension CollectionViewController: UICollectionViewDragDelegate {
     }
 }
 
+
+// ドロップの設定
 extension CollectionViewController: UICollectionViewDropDelegate {
-    func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: any UICollectionViewDropCoordinator) {
+    // ドロップ時のパスを取得&設定
+    func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
+        guard var destinationIndexPath = coordinator.destinationIndexPath else { return }
+        
+        if destinationIndexPath.row == presenter.indexOfPlusCell() {
+            destinationIndexPath.row = presenter.indexOfPlusCell() - 1
+        }
+        
+        // 配列とセルの更新処理を呼び出し
+        if coordinator.proposal.operation == .move {
+            self.updateItem(coordinator: coordinator, destinationIndex: destinationIndexPath, collectionView: collectionView)
+        }
+    }
+    
+    // ドロップ範囲の設定
+    func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
+        
+        // ドラッグ前の位置取得不可
+        let destinationIndexPath = destinationIndexPath ?? IndexPath(row: 0, section: 0)
+        
+        // 「+」の場合
+        if collectionView.hasActiveDrag && destinationIndexPath.row >= presenter.indexOfPlusCell() {
+            return UICollectionViewDropProposal(operation: .forbidden)
+        }
+        
+        return UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
     }
 }
 
 
 // MARK: private extension
 
-private extension CollectionViewController {}
+private extension CollectionViewController {
+    func updateItem(coordinator: any UICollectionViewDropCoordinator, destinationIndex: IndexPath, collectionView: UICollectionView){
+        guard let item = coordinator.items.first,
+              let sourceIndexPath = item.sourceIndexPath,
+              // ドラッグ時に与えた情報取得
+              let movedData = item.dragItem.localObject as? String else { return }
+        
+        collectionView.performBatchUpdates {
+            presenter.dragAndDrop(dragPosition: sourceIndexPath, dropPosition: destinationIndex, data: movedData)
+        }
+    }
+}
