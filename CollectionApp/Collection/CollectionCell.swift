@@ -8,9 +8,22 @@
 import UIKit
 
 class CollectionCell: UICollectionViewCell {
-    @IBOutlet private var label: UILabel!
+    @IBOutlet private var imageView: UIImageView!
+ 
     
-    func setupCell(labelText: String) {
-        label.text = labelText
+    // 意味なし
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.image = nil
+    }
+}
+
+extension CollectionCell {
+    func deleteImage() {
+        imageView.image = nil
+    }
+    
+    func setupCell(imageResource: ImageResource) {
+        imageView.image = UIImage(resource: imageResource)
     }
 }

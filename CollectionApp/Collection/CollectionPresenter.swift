@@ -20,7 +20,8 @@ protocol CollectionPresentation: AnyObject {
 
     // MARK: func
     
-    func collectionContent(index: Int) -> String
+    func cellDidTap(row: Int)
+    func collectionContent(index: Int) -> ImageResource
     func dragAndDrop(dragPosition: IndexPath, dropPosition: IndexPath, data: String)
     func plusCellDidTap()
     func indexOfPlusCell() -> Int
@@ -53,13 +54,16 @@ class CollectionPresenter: CollectionPresentation {
 
     // MARK: func
     
-    func collectionContent(index: Int) -> String {
+    func cellDidTap(row: Int) {
+        router.presentImageViewController(image: interactor.collectionContent(index: row))
+    }
+    
+    func collectionContent(index: Int) -> ImageResource {
         interactor.collectionContent(index: index)
     }
     
     func dragAndDrop(dragPosition: IndexPath, dropPosition: IndexPath, data: String) {
-        interactor.removeCollectionContent(at: dragPosition.row)
-        interactor.insertCollectionContent(data: data, at: dropPosition.row)
+        interactor.replaceCollectionContent(from: dragPosition.row, to: dropPosition.row)
         view?.deleteCollectionItems(at: [dragPosition])
         view?.insertCollectionItems(at: [dropPosition])
     }

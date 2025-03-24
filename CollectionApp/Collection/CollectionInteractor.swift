@@ -16,10 +16,11 @@ protocol CollectionUseCase: AnyObject {
     
     func addCollectionContent()
     func collectionArrayCount() -> Int
-    func collectionContent(index: Int) -> String
+    func collectionContent(index: Int) -> ImageResource
     func indexOfPlusCell() -> Int
-    func insertCollectionContent(data: String, at row: Int)
+    func insertCollectionContent(data: ImageResource, at row: Int)
     func removeCollectionContent(at row: Int)
+    func replaceCollectionContent(from x: Int, to y: Int)
 }
 
 // MARK: UseCase (Presenter -> Interactor)
@@ -33,7 +34,7 @@ class CollectionInteractor: CollectionUseCase {
 
     // MARK: Private Properties
     
-    private var collectionArray: [String] = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "+"]
+    private var collectionArray: [ImageResource] = [.image0,.image1,.image2,.image3,.image4,.image5,.image6,.image7,.image8,.image9,.image10,.image11]
 
     // MARK: init
 
@@ -41,14 +42,14 @@ class CollectionInteractor: CollectionUseCase {
 
     // MARK: func
     func addCollectionContent() {
-        collectionArray.insert(String(collectionArray.count), at: collectionArrayCount() - 1)
+        //collectionArray.insert(String(collectionArray.count), at: collectionArrayCount() - 1)
     }
     
     func collectionArrayCount() -> Int {
         return collectionArray.count
     }
     
-    func collectionContent(index: Int) -> String {
+    func collectionContent(index: Int) -> ImageResource {
         return collectionArray[index]
     }
     
@@ -56,12 +57,18 @@ class CollectionInteractor: CollectionUseCase {
         return collectionArray.count - 1
     }
     
-    func insertCollectionContent(data: String, at row: Int) {
+    func insertCollectionContent(data: ImageResource, at row: Int) {
         collectionArray.insert(data, at: row)
     }
     
     func removeCollectionContent(at row: Int) {
         collectionArray.remove(at: row)
+    }
+    
+    func replaceCollectionContent(from x: Int, to y: Int) {
+        let tmp = collectionArray[x]
+        collectionArray.remove(at: x)
+        collectionArray.insert(tmp, at: y)
     }
 }
 

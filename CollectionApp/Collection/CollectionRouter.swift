@@ -11,6 +11,8 @@ import UIKit
 
 protocol CollectionWireframe: AnyObject {
     // MARK: func
+    
+    func presentImageViewController(image: ImageResource)
 }
 
 // MARK: Wireframe (Presenter -> Router)
@@ -29,6 +31,16 @@ class CollectionRouter: CollectionWireframe {
     // MARK: deinit
 
     // MARK: func
+    
+    func presentImageViewController(image: ImageResource) {
+        guard let imageViewController = UIStoryboard(name: "ImageViewController", bundle: nil).instantiateInitialViewController() as? ImageViewController
+        else {
+            return
+        }
+        imageViewController.imageResource = image
+        imageViewController.modalPresentationStyle = .fullScreen
+        viewController?.present(imageViewController, animated: false)
+    }
 }
 
 // MARK: private extension

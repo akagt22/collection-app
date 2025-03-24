@@ -29,31 +29,32 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="CollectionCell" reuseIdentifier="CollectionCell" id="atO-8d-GEX" customClass="CollectionCell" customModule="CollectionApp" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="16" width="42" height="21"/>
+                                        <rect key="frame" x="16" y="16" width="127.99999999999997" height="128"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Qc8-6W-x4S">
-                                            <rect key="frame" x="0.0" y="0.0" width="42" height="21"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="127.99999999999997" height="128"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bxR-ky-Lu3">
-                                                    <rect key="frame" x="0.0" y="0.0" width="42" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sj8-IU-CmA">
+                                                    <rect key="frame" x="-56" y="0.0" width="240" height="128"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="bxR-ky-Lu3" secondAttribute="trailing" id="6H8-eD-hPb"/>
-                                                <constraint firstItem="bxR-ky-Lu3" firstAttribute="leading" secondItem="Qc8-6W-x4S" secondAttribute="leading" id="LyP-SY-his"/>
-                                                <constraint firstItem="bxR-ky-Lu3" firstAttribute="top" secondItem="Qc8-6W-x4S" secondAttribute="top" id="N9c-bR-EfF"/>
-                                                <constraint firstAttribute="bottom" secondItem="bxR-ky-Lu3" secondAttribute="bottom" id="O7t-w4-nQI"/>
-                                            </constraints>
                                         </collectionViewCellContentView>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabledForSubviews" value="NO"/>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="NO"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="heroID" value="CollectionCell"/>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <outlet property="label" destination="bxR-ky-Lu3" id="tmT-3W-ZN2"/>
+                                            <outlet property="imageView" destination="sj8-IU-CmA" id="LmV-gm-WG7"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabledForSubviews" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </collectionView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -65,13 +66,16 @@
                             <constraint firstItem="Whk-0G-fHU" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="QYg-t1-hCO"/>
                         </constraints>
                     </view>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <outlet property="collectionView" destination="Whk-0G-fHU" id="yb0-dA-tWX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="123" y="-2"/>
+            <point key="canvasLocation" x="972" y="-692"/>
         </scene>
     </scenes>
     <resources>

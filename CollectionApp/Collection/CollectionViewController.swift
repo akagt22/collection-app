@@ -115,7 +115,7 @@ extension CollectionViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        cell.setupCell(labelText: presenter.collectionContent(index: indexPath.row))
+        cell.setupCell(imageResource: presenter.collectionContent(index: indexPath.row))
         return cell
     }
     
@@ -125,6 +125,8 @@ extension CollectionViewController: UICollectionViewDataSource {
         if indexPath.row == presenter.indexOfPlusCell() {
             presenter.plusCellDidTap()
         }
+        
+        presenter.cellDidTap(row: indexPath.row)
     }
 }
 
@@ -138,11 +140,11 @@ extension CollectionViewController: UICollectionViewDelegateFlowLayout {
 // ドラッグの設定
 extension CollectionViewController: UICollectionViewDragDelegate {
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-        // 「+」のセルはドラッグ不可
-        if indexPath.row >= presenter.indexOfPlusCell() { return [] }
+//        // 「+」のセルはドラッグ不可
+//        if indexPath.row >= presenter.indexOfPlusCell() { return [] }
         let dragItem = UIDragItem(itemProvider: NSItemProvider())
         // アプリ内完結ならlocalObject。アプリ外にdrag&dropするならNSItemProvider(object:)に渡す値を入れる
-        dragItem.localObject = presenter.collectionContent(index: indexPath.row)
+        //dragItem.localObject = presenter.collectionContent(index: indexPath.row)
         return [dragItem]
     }
 }
@@ -154,9 +156,9 @@ extension CollectionViewController: UICollectionViewDropDelegate {
     func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
         guard var destinationIndexPath = coordinator.destinationIndexPath else { return }
         
-        if destinationIndexPath.row == presenter.indexOfPlusCell() {
-            destinationIndexPath.row = presenter.indexOfPlusCell() - 1
-        }
+//        if destinationIndexPath.row == presenter.indexOfPlusCell() {
+//            destinationIndexPath.row = presenter.indexOfPlusCell() - 1
+//        }
         
         // 配列とセルの更新処理を呼び出し
         if coordinator.proposal.operation == .move {
@@ -170,10 +172,10 @@ extension CollectionViewController: UICollectionViewDropDelegate {
         // ドラッグ前の位置取得不可
         let destinationIndexPath = destinationIndexPath ?? IndexPath(row: 0, section: 0)
         
-        // 「+」の場合
-        if collectionView.hasActiveDrag && destinationIndexPath.row >= presenter.indexOfPlusCell() {
-            return UICollectionViewDropProposal(operation: .forbidden)
-        }
+//        // 「+」の場合
+//        if collectionView.hasActiveDrag && destinationIndexPath.row >= presenter.indexOfPlusCell() {
+//            return UICollectionViewDropProposal(operation: .forbidden)
+//        }
         
         return UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
     }
@@ -185,12 +187,21 @@ extension CollectionViewController: UICollectionViewDropDelegate {
 private extension CollectionViewController {
     func updateItem(coordinator: any UICollectionViewDropCoordinator, destinationIndex: IndexPath, collectionView: UICollectionView){
         guard let item = coordinator.items.first,
-              let sourceIndexPath = item.sourceIndexPath,
-              // ドラッグ時に与えた情報取得
-              let movedData = item.dragItem.localObject as? String else { return }
+              let sourceIndexPath = item.sourceIndexPath  else { return }
+//              let sourceIndexPath = item.sourceIndexPath,
+//              // ドラッグ時に与えた情報取得
+//             let movedData = item.dragItem.localObject as? String else { return }
         
-        collectionView.performBatchUpdates {
-            presenter.dragAndDrop(dragPosition: sourceIndexPath, dropPosition: destinationIndex, data: movedData)
-        }
+        let cell = collectionView.cellForItem(at: sourceIndexPath) as? CollectionCell
+        cell?.deleteImage()
+        
+        collectionView.performBatchUpdates({
+            presenter.dragAndDrop(dragPosition: sourceIndexPath, dropPosition: destinationIndex, data: "")
+        }, completion: { _ in
+            // 意味なし
+//            collectionView.reloadItems(at: [destinationIndex])
+        })
+        
+        coordinator.drop(item.dragItem, toItemAt: destinationIndex)
     }
 }
