@@ -10,9 +10,10 @@ import UIKit
 // MARK: Wireframe (Presenter -> Router)
 
 protocol CollectionWireframe: AnyObject {
+
     // MARK: func
     
-    func presentImageViewController(image: ImageResource)
+    func presentImageViewController(imageData: NamedImage)
 }
 
 // MARK: Wireframe (Presenter -> Router)
@@ -23,7 +24,7 @@ class CollectionRouter: CollectionWireframe {
     weak var viewController: CollectionViewController?
 
     // MARK: Public Properties
-
+    
     // MARK: Private Properties
 
     // MARK: init
@@ -32,14 +33,15 @@ class CollectionRouter: CollectionWireframe {
 
     // MARK: func
     
-    func presentImageViewController(image: ImageResource) {
+    func presentImageViewController(imageData: NamedImage) {
         guard let imageViewController = UIStoryboard(name: "ImageViewController", bundle: nil).instantiateInitialViewController() as? ImageViewController
         else {
             return
         }
-        imageViewController.imageResource = image
+        imageViewController.imageViewHeroID = imageData.name
+        imageViewController.imageResource = imageData.resource
         imageViewController.modalPresentationStyle = .fullScreen
-        viewController?.present(imageViewController, animated: false)
+        viewController?.present(imageViewController, animated: true)
     }
 }
 

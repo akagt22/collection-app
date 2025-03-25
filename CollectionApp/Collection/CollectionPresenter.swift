@@ -19,9 +19,9 @@ protocol CollectionPresentation: AnyObject {
     // MARK: Lifecycle func
 
     // MARK: func
-    
-    func cellDidTap(row: Int)
-    func collectionContent(index: Int) -> ImageResource
+
+    func cellDidTap(imageData: NamedImage)
+    func collectionContent(index: Int) -> NamedImage
     func dragAndDrop(dragPosition: IndexPath, dropPosition: IndexPath, data: String)
     func plusCellDidTap()
     func indexOfPlusCell() -> Int
@@ -54,11 +54,11 @@ class CollectionPresenter: CollectionPresentation {
 
     // MARK: func
     
-    func cellDidTap(row: Int) {
-        router.presentImageViewController(image: interactor.collectionContent(index: row))
+    func cellDidTap(imageData: NamedImage) {
+        router.presentImageViewController(imageData: imageData)
     }
     
-    func collectionContent(index: Int) -> ImageResource {
+    func collectionContent(index: Int) -> NamedImage {
         interactor.collectionContent(index: index)
     }
     

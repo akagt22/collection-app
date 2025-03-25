@@ -17,16 +17,22 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VKb-2c-LOr">
-                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <rect key="frame" x="0.0" y="326" width="393" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="ixk-i2-6VW"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabledForSubviews" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="VKb-2c-LOr" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="WRh-Nq-AQH"/>
-                            <constraint firstItem="VKb-2c-LOr" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="iDn-5k-ZLR"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="VKb-2c-LOr" secondAttribute="bottom" id="ua6-1B-Lep"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="VKb-2c-LOr" secondAttribute="trailing" id="zBw-ZK-vTC"/>
+                            <constraint firstItem="VKb-2c-LOr" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="E8k-aG-Lt7"/>
+                            <constraint firstItem="VKb-2c-LOr" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="J80-kk-MPf"/>
+                            <constraint firstItem="VKb-2c-LOr" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="lBq-xo-Cb8"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
@@ -40,6 +46,7 @@
                     </userDefinedRuntimeAttributes>
                     <connections>
                         <outlet property="imageView" destination="VKb-2c-LOr" id="kKg-QE-qG8"/>
+                        <outlet property="imageViewHeight" destination="ixk-i2-6VW" id="yXj-bD-lDj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

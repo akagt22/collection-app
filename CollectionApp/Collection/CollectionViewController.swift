@@ -115,18 +115,21 @@ extension CollectionViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        cell.setupCell(imageResource: presenter.collectionContent(index: indexPath.row))
+        cell.setupCell(imageResource: presenter.collectionContent(index: indexPath.row).resource)
         return cell
     }
     
     // セルタップ
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // プラスセルタップ
-        if indexPath.row == presenter.indexOfPlusCell() {
-            presenter.plusCellDidTap()
-        }
+//        if indexPath.row == presenter.indexOfPlusCell() {
+//            presenter.plusCellDidTap()
+//        }
         
-        presenter.cellDidTap(row: indexPath.row)
+        let cell = collectionView.cellForItem(at: indexPath) as? CollectionCell
+        let imageData = presenter.collectionContent(index: indexPath.row)
+        cell?.setImageViewHeroID(id: imageData.name)
+        presenter.cellDidTap(imageData: imageData)
     }
 }
 

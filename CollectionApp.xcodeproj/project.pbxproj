@@ -6,6 +6,10 @@
 	objectVersion = 76;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		125171342D91420F0021A27F /* Hero in Frameworks */ = {isa = PBXBuildFile; productRef = 125171332D91420F0021A27F /* Hero */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		124CFD972D38FD9B00764EB6 /* CollectionApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CollectionApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -42,6 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				125171342D91420F0021A27F /* Hero in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,6 +115,9 @@
 				Base,
 			);
 			mainGroup = 124CFD8E2D38FD9B00764EB6;
+			packageReferences = (
+				125171322D91420F0021A27F /* XCRemoteSwiftPackageReference "Hero" */,
+			);
 			preferredProjectObjectVersion = 56;
 			productRefGroup = 124CFD982D38FD9B00764EB6 /* Products */;
 			projectDirPath = "";
@@ -342,6 +350,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		125171322D91420F0021A27F /* XCRemoteSwiftPackageReference "Hero" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/HeroTransitions/Hero.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.6.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		125171332D91420F0021A27F /* Hero */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 125171322D91420F0021A27F /* XCRemoteSwiftPackageReference "Hero" */;
+			productName = Hero;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 124CFD8F2D38FD9B00764EB6 /* Project object */;
 }

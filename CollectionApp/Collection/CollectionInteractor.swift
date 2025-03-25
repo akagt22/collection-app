@@ -16,11 +16,16 @@ protocol CollectionUseCase: AnyObject {
     
     func addCollectionContent()
     func collectionArrayCount() -> Int
-    func collectionContent(index: Int) -> ImageResource
+    func collectionContent(index: Int) -> NamedImage
     func indexOfPlusCell() -> Int
-    func insertCollectionContent(data: ImageResource, at row: Int)
+    func insertCollectionContent(data: NamedImage, at row: Int)
     func removeCollectionContent(at row: Int)
     func replaceCollectionContent(from x: Int, to y: Int)
+}
+
+struct NamedImage {
+    let resource: ImageResource
+    let name: String
 }
 
 // MARK: UseCase (Presenter -> Interactor)
@@ -34,7 +39,9 @@ class CollectionInteractor: CollectionUseCase {
 
     // MARK: Private Properties
     
-    private var collectionArray: [ImageResource] = [.image0,.image1,.image2,.image3,.image4,.image5,.image6,.image7,.image8,.image9,.image10,.image11]
+    private var collectionArray: [NamedImage] = (0...10).map {
+        NamedImage(resource: ImageResource(name: "image\($0)", bundle: .main), name: "Image\($0)")
+    }
 
     // MARK: init
 
@@ -49,7 +56,7 @@ class CollectionInteractor: CollectionUseCase {
         return collectionArray.count
     }
     
-    func collectionContent(index: Int) -> ImageResource {
+    func collectionContent(index: Int) -> NamedImage {
         return collectionArray[index]
     }
     
@@ -57,7 +64,7 @@ class CollectionInteractor: CollectionUseCase {
         return collectionArray.count - 1
     }
     
-    func insertCollectionContent(data: ImageResource, at row: Int) {
+    func insertCollectionContent(data: NamedImage, at row: Int) {
         collectionArray.insert(data, at: row)
     }
     
