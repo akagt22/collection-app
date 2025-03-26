@@ -23,8 +23,7 @@ protocol CollectionPresentation: AnyObject {
     func cellDidTap(imageData: NamedImage)
     func collectionContent(index: Int) -> NamedImage
     func dragAndDrop(dragPosition: IndexPath, dropPosition: IndexPath, data: String)
-    func plusCellDidTap()
-    func indexOfPlusCell() -> Int
+    func indexOfCrossCell() -> Int
     func numberOfCells() -> Int
 }
 
@@ -68,13 +67,8 @@ class CollectionPresenter: CollectionPresentation {
         view?.insertCollectionItems(at: [dropPosition])
     }
     
-    func plusCellDidTap() {
-        interactor.addCollectionContent()
-        view?.reloadCollectionViewData()
-    }
-    
-    func indexOfPlusCell() -> Int {
-        interactor.indexOfPlusCell()
+    func indexOfCrossCell() -> Int {
+        interactor.indexOfCrossCell()
     }
     
     func numberOfCells() -> Int {

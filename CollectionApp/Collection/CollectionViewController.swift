@@ -121,10 +121,6 @@ extension CollectionViewController: UICollectionViewDataSource {
     
     // セルタップ
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // プラスセルタップ
-//        if indexPath.row == presenter.indexOfPlusCell() {
-//            presenter.plusCellDidTap()
-//        }
         
         let cell = collectionView.cellForItem(at: indexPath) as? CollectionCell
         let imageData = presenter.collectionContent(index: indexPath.row)
@@ -143,26 +139,16 @@ extension CollectionViewController: UICollectionViewDelegateFlowLayout {
 // ドラッグの設定
 extension CollectionViewController: UICollectionViewDragDelegate {
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-//        // 「+」のセルはドラッグ不可
-//        if indexPath.row >= presenter.indexOfPlusCell() { return [] }
-        let dragItem = UIDragItem(itemProvider: NSItemProvider())
-        // アプリ内完結ならlocalObject。アプリ外にdrag&dropするならNSItemProvider(object:)に渡す値を入れる
-        //dragItem.localObject = presenter.collectionContent(index: indexPath.row)
-        return [dragItem]
+        return [UIDragItem(itemProvider: NSItemProvider())]
     }
 }
-
 
 // ドロップの設定
 extension CollectionViewController: UICollectionViewDropDelegate {
     // ドロップ時のパスを取得&設定
     func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
-        guard var destinationIndexPath = coordinator.destinationIndexPath else { return }
-        
-//        if destinationIndexPath.row == presenter.indexOfPlusCell() {
-//            destinationIndexPath.row = presenter.indexOfPlusCell() - 1
-//        }
-        
+        guard let destinationIndexPath = coordinator.destinationIndexPath else { return }
+                
         // 配列とセルの更新処理を呼び出し
         if coordinator.proposal.operation == .move {
             self.updateItem(coordinator: coordinator, destinationIndex: destinationIndexPath, collectionView: collectionView)
@@ -171,17 +157,10 @@ extension CollectionViewController: UICollectionViewDropDelegate {
     
     // ドロップ範囲の設定
     func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
-        
-        // ドラッグ前の位置取得不可
-        let destinationIndexPath = destinationIndexPath ?? IndexPath(row: 0, section: 0)
-        
-//        // 「+」の場合
-//        if collectionView.hasActiveDrag && destinationIndexPath.row >= presenter.indexOfPlusCell() {
-//            return UICollectionViewDropProposal(operation: .forbidden)
-//        }
-        
+    
         return UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
     }
+
 }
 
 
@@ -191,9 +170,6 @@ private extension CollectionViewController {
     func updateItem(coordinator: any UICollectionViewDropCoordinator, destinationIndex: IndexPath, collectionView: UICollectionView){
         guard let item = coordinator.items.first,
               let sourceIndexPath = item.sourceIndexPath  else { return }
-//              let sourceIndexPath = item.sourceIndexPath,
-//              // ドラッグ時に与えた情報取得
-//             let movedData = item.dragItem.localObject as? String else { return }
         
         let cell = collectionView.cellForItem(at: sourceIndexPath) as? CollectionCell
         cell?.deleteImage()

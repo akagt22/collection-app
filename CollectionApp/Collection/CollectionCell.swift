@@ -22,11 +22,11 @@ extension CollectionCell {
         imageView.image = nil
     }
     
-    func setupCell(imageResource: ImageResource) {
-        imageView.image = UIImage(resource: imageResource)
-    }
-    
     func setImageViewHeroID(id: String) {
         imageView.heroID =  id
+    }
+    
+    func setupCell(imageResource: ImageResource) {
+        imageView.image = UIImage(resource: imageResource)
     }
 }

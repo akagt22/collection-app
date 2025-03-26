@@ -14,10 +14,9 @@ protocol CollectionUseCase: AnyObject {
 
     // MARK: func
     
-    func addCollectionContent()
     func collectionArrayCount() -> Int
     func collectionContent(index: Int) -> NamedImage
-    func indexOfPlusCell() -> Int
+    func indexOfCrossCell() -> Int
     func insertCollectionContent(data: NamedImage, at row: Int)
     func removeCollectionContent(at row: Int)
     func replaceCollectionContent(from x: Int, to y: Int)
@@ -48,9 +47,6 @@ class CollectionInteractor: CollectionUseCase {
     // MARK: deinit
 
     // MARK: func
-    func addCollectionContent() {
-        //collectionArray.insert(String(collectionArray.count), at: collectionArrayCount() - 1)
-    }
     
     func collectionArrayCount() -> Int {
         return collectionArray.count
@@ -60,7 +56,7 @@ class CollectionInteractor: CollectionUseCase {
         return collectionArray[index]
     }
     
-    func indexOfPlusCell() -> Int {
+    func indexOfCrossCell() -> Int {
         return collectionArray.count - 1
     }
     
