@@ -29,7 +29,22 @@ final class CollectionViewController: UIViewController, UICollectionViewDelegate
 
     // MARK: IBOutlet
 
-    @IBOutlet private var collectionView: UICollectionView!
+    @IBOutlet private var collectionView: UICollectionView! {
+        didSet {
+            // セル同士の間隔
+            layout.minimumLineSpacing = spacing
+            layout.minimumInteritemSpacing = spacing
+            
+            // セルの周りの余白(画面端)
+            layout.sectionInset = UIEdgeInsets(top: sectionInset, left: sectionInset, bottom: sectionInset, right: sectionInset)
+            
+            // viewDidLoad~ViewWillAppearでは横幅の値が正しくない
+            let totalInsetSize: CGFloat = sectionInset * 2 + spacing * (rowNumber - 1)
+            collectionCellWidth = (collectionView.frame.width - totalInsetSize) / rowNumber
+            collectionCellHeight = collectionCellWidth
+            print("screenWidth：\(collectionView.frame.width)、totalInsetSize：\(totalInsetSize)、width：\(collectionCellWidth)、height：\(collectionCellHeight)")
+        }
+    }
     
     // MARK: Public Properties
 
@@ -38,7 +53,7 @@ final class CollectionViewController: UIViewController, UICollectionViewDelegate
     private let layout = UICollectionViewFlowLayout()
     private let sectionInset: CGFloat = 8
     private let spacing: CGFloat = 16
-    private let rowNumber: CGFloat = 3
+    private let rowNumber: CGFloat = 4
     private var collectionCellHeight: CGFloat = 0
     private var collectionCellWidth: CGFloat = 0
 
@@ -66,22 +81,6 @@ final class CollectionViewController: UIViewController, UICollectionViewDelegate
         collectionView.delegate = self
         collectionView.dragDelegate = self
         collectionView.dropDelegate = self
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        // セル同士の間隔
-        layout.minimumLineSpacing = spacing
-        layout.minimumInteritemSpacing = spacing
-        
-        // セルの周りの余白(画面端)
-        layout.sectionInset = UIEdgeInsets(top: sectionInset, left: sectionInset, bottom: sectionInset, right: sectionInset)
-        
-        // viewDidLoad~ViewWillAppearでは横幅の値が正しくない
-        let totalInsetSize: CGFloat = sectionInset * 2 + spacing * (rowNumber - 1)
-        collectionCellWidth = (collectionView.frame.width - totalInsetSize) / rowNumber
-        collectionCellHeight = collectionCellWidth
-        print("screenWidth：\(collectionView.frame.width)、totalInsetSize：\(totalInsetSize)、width：\(collectionCellWidth)、height：\(collectionCellHeight)")
     }
     
     // MARK: func
@@ -188,9 +187,14 @@ private extension CollectionViewController {
               let sourceIndexPath = item.sourceIndexPath,
               // ドラッグ時に与えた情報取得
               let movedData = item.dragItem.localObject as? String else { return }
+
+        let cell = collectionView.cellForItem(at: sourceIndexPath) as? CollectionCell
+        cell?.deleteLabelText()
         
         collectionView.performBatchUpdates {
             presenter.dragAndDrop(dragPosition: sourceIndexPath, dropPosition: destinationIndex, data: movedData)
         }
+        
+        coordinator.drop(item.dragItem, toItemAt: destinationIndex)
     }
 }

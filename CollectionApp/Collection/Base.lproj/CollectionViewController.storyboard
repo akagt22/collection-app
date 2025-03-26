@@ -35,7 +35,11 @@
                                             <rect key="frame" x="0.0" y="0.0" width="42" height="21"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bxR-ky-Lu3">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JDm-du-2dK">
+                                                    <rect key="frame" x="0.0" y="0.0" width="42" height="21"/>
+                                                    <color key="backgroundColor" systemColor="systemYellowColor"/>
+                                                </view>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bxR-ky-Lu3">
                                                     <rect key="frame" x="0.0" y="0.0" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -45,8 +49,16 @@
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="bxR-ky-Lu3" secondAttribute="trailing" id="6H8-eD-hPb"/>
                                                 <constraint firstItem="bxR-ky-Lu3" firstAttribute="leading" secondItem="Qc8-6W-x4S" secondAttribute="leading" id="LyP-SY-his"/>
+                                                <constraint firstItem="bxR-ky-Lu3" firstAttribute="leading" secondItem="Qc8-6W-x4S" secondAttribute="leading" id="MWG-Ge-KmM"/>
                                                 <constraint firstItem="bxR-ky-Lu3" firstAttribute="top" secondItem="Qc8-6W-x4S" secondAttribute="top" id="N9c-bR-EfF"/>
+                                                <constraint firstAttribute="trailing" secondItem="bxR-ky-Lu3" secondAttribute="trailing" id="NkH-rG-GH3"/>
                                                 <constraint firstAttribute="bottom" secondItem="bxR-ky-Lu3" secondAttribute="bottom" id="O7t-w4-nQI"/>
+                                                <constraint firstAttribute="bottom" secondItem="bxR-ky-Lu3" secondAttribute="bottom" id="S5S-Dz-BJR"/>
+                                                <constraint firstItem="JDm-du-2dK" firstAttribute="top" secondItem="Qc8-6W-x4S" secondAttribute="top" id="TfO-Mz-cJ5"/>
+                                                <constraint firstItem="JDm-du-2dK" firstAttribute="leading" secondItem="Qc8-6W-x4S" secondAttribute="leading" id="Ucl-MC-icv"/>
+                                                <constraint firstItem="bxR-ky-Lu3" firstAttribute="top" secondItem="Qc8-6W-x4S" secondAttribute="top" id="bqs-B3-T4b"/>
+                                                <constraint firstAttribute="trailing" secondItem="JDm-du-2dK" secondAttribute="trailing" id="pTg-5b-qHn"/>
+                                                <constraint firstAttribute="bottom" secondItem="JDm-du-2dK" secondAttribute="bottom" id="swW-Ny-odU"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <connections>
@@ -77,6 +89,9 @@
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
