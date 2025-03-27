@@ -21,10 +21,11 @@ protocol CollectionPresentation: AnyObject {
     // MARK: func
 
     func cellDidTap(imageData: NamedImage)
-    func collectionContent(index: Int) -> NamedImage
-    func dragAndDrop(dragPosition: IndexPath, dropPosition: IndexPath, data: String)
-    func indexOfCrossCell() -> Int
-    func numberOfCells() -> Int
+    func collectionContent(index: IndexPath) -> NamedImage
+    func dragAndDrop(dragPosition: IndexPath, dropPosition: IndexPath)
+    func numberOfCells(section: Int) -> Int
+    func numberOfSection() -> Int
+    func sectionName(section: Int) -> String
 }
 
 // MARK: InteractorOutput (Interactor -> Presenter)
@@ -57,22 +58,45 @@ class CollectionPresenter: CollectionPresentation {
         router.presentImageViewController(imageData: imageData)
     }
     
-    func collectionContent(index: Int) -> NamedImage {
-        interactor.collectionContent(index: index)
+    func collectionContent(index: IndexPath) -> NamedImage {
+        guard let sectionType = SectionType(rawValue: index.section) else {
+            return NamedImage(resource: .image0, name: "")
+        }
+        return interactor.collectionContent(index: index.row, type: sectionType)
     }
     
-    func dragAndDrop(dragPosition: IndexPath, dropPosition: IndexPath, data: String) {
-        interactor.replaceCollectionContent(from: dragPosition.row, to: dropPosition.row)
+    func dragAndDrop(dragPosition: IndexPath, dropPosition: IndexPath) {
+        let isSameSection = dragPosition.section == dropPosition.section
+        
+        // セクションが同じ場合
+        if isSameSection {
+            let sectionType = SectionType(rawValue: dragPosition.section)!
+            interactor.replaceCollectionContent(from: dragPosition.row, to: dropPosition.row, type: sectionType)
+        } else {
+            let data = collectionContent(index: dragPosition)
+            let fromSection = SectionType(rawValue: dragPosition.section)!
+            let toSection = SectionType(rawValue: dropPosition.section)!
+            
+            interactor.insertCollectionContent(data: data, at: dropPosition.row, type: toSection)
+            interactor.removeCollectionContent(at: dragPosition.row, type: fromSection)
+        }
+
+        // アイテムの削除と挿入
         view?.deleteCollectionItems(at: [dragPosition])
         view?.insertCollectionItems(at: [dropPosition])
     }
     
-    func indexOfCrossCell() -> Int {
-        interactor.indexOfCrossCell()
+    func numberOfCells(section: Int) -> Int {
+        guard let sectionType = SectionType(rawValue: section) else { return 0 }
+         return interactor.collectionArrayCount(type: sectionType)
     }
     
-    func numberOfCells() -> Int {
-        return interactor.collectionArrayCount()
+    func numberOfSection() -> Int {
+        return 2
+    }
+    
+    func sectionName(section: Int) -> String {
+        return SectionType(rawValue: section)?.name ?? ""
     }
 }
 

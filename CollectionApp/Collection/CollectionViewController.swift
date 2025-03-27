@@ -21,7 +21,7 @@ protocol CollectionView: AnyObject {
     func reloadCollectionViewData()
 }
 
-final class CollectionViewController: UIViewController, UICollectionViewDelegate {
+final class CollectionViewController: UIViewController {
 
     // MARK: VIPER Properties
 
@@ -29,18 +29,38 @@ final class CollectionViewController: UIViewController, UICollectionViewDelegate
 
     // MARK: IBOutlet
 
-    @IBOutlet private var collectionView: UICollectionView!
+    @IBOutlet private var collectionView: UICollectionView! {
+        didSet {
+            let layout = UICollectionViewFlowLayout()
+            
+            layout.headerReferenceSize = CGSize(width: collectionView.frame.width, height: 50)
+            layout.minimumLineSpacing = spacing // 縦
+            layout.minimumInteritemSpacing = spacing // 横
+
+            // セルの周りの余白(画面端)
+            layout.sectionInset = UIEdgeInsets(top: sectionInset, left: sectionInset, bottom: sectionInset, right: sectionInset)
+            
+            // viewDidLoad~ViewWillAppearでは横幅の値が正しくない
+            let totalInsetSize: CGFloat = sectionInset * 2 + spacing * (rowNumber - 1)
+
+            
+            let cellWidth = (collectionView.frame.width - totalInsetSize) / rowNumber
+            let cellHeight = cellWidth
+            layout.itemSize = CGSize(width: cellWidth, height: cellHeight)
+            collectionView.collectionViewLayout = layout
+            
+            print("screenWidth：\(collectionView.frame.width)、totalInsetSize：\(totalInsetSize)、width：\(cellWidth)、height：\(cellHeight)")
+
+        }
+    }
     
     // MARK: Public Properties
 
     // MARK: Private Properties
     
-    private let layout = UICollectionViewFlowLayout()
     private let sectionInset: CGFloat = 8
     private let spacing: CGFloat = 16
     private let rowNumber: CGFloat = 3
-    private var collectionCellHeight: CGFloat = 0
-    private var collectionCellWidth: CGFloat = 0
 
     // MARK: init
     
@@ -61,27 +81,10 @@ final class CollectionViewController: UIViewController, UICollectionViewDelegate
         interactor.output = presenter
         router.viewController = self
         
-        collectionView.collectionViewLayout = layout
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.dragDelegate = self
         collectionView.dropDelegate = self
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        // セル同士の間隔
-        layout.minimumLineSpacing = spacing
-        layout.minimumInteritemSpacing = spacing
-        
-        // セルの周りの余白(画面端)
-        layout.sectionInset = UIEdgeInsets(top: sectionInset, left: sectionInset, bottom: sectionInset, right: sectionInset)
-        
-        // viewDidLoad~ViewWillAppearでは横幅の値が正しくない
-        let totalInsetSize: CGFloat = sectionInset * 2 + spacing * (rowNumber - 1)
-        collectionCellWidth = (collectionView.frame.width - totalInsetSize) / rowNumber
-        collectionCellHeight = collectionCellWidth
-        print("screenWidth：\(collectionView.frame.width)、totalInsetSize：\(totalInsetSize)、width：\(collectionCellWidth)、height：\(collectionCellHeight)")
     }
     
     // MARK: func
@@ -107,7 +110,7 @@ extension CollectionViewController: UICollectionViewDataSource {
     
     // cellの数の指定
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return presenter.numberOfCells()
+            return presenter.numberOfCells(section: section)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -115,30 +118,43 @@ extension CollectionViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        cell.setupCell(imageResource: presenter.collectionContent(index: indexPath.row).resource)
+        cell.setupCell(namedImage: presenter.collectionContent(index: indexPath))
         return cell
     }
     
-    // セルタップ
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    // セクション数
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return presenter.numberOfSection()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
-        let cell = collectionView.cellForItem(at: indexPath) as? CollectionCell
-        let imageData = presenter.collectionContent(index: indexPath.row)
-        cell?.setImageViewHeroID(id: imageData.name)
-        presenter.cellDidTap(imageData: imageData)
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "CollectionHeader", for: indexPath) as? CollectionHeader else {
+            return UICollectionReusableView()
+        }
+        
+        header.setupHeader(title: presenter.sectionName(section: indexPath.section))
+        return header
     }
 }
 
-extension CollectionViewController: UICollectionViewDelegateFlowLayout {
-    // セルのサイズ指定
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionCellWidth, height: collectionCellHeight)
+extension CollectionViewController: UICollectionViewDelegate {
+    // セルタップ
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.row >= presenter.numberOfCells(section: indexPath.section) { return }
+            
+        let cell = collectionView.cellForItem(at: indexPath) as? CollectionCell
+        let imageData = presenter.collectionContent(index: indexPath)
+        cell?.setImageViewHeroID(id: imageData.name ?? "")
+        presenter.cellDidTap(imageData: imageData)
     }
 }
 
 // ドラッグの設定
 extension CollectionViewController: UICollectionViewDragDelegate {
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        // スケルトンセルはドラッグ不可
+        if indexPath.row >= presenter.numberOfCells(section: indexPath.section) { return [] }
         return [UIDragItem(itemProvider: NSItemProvider())]
     }
 }
@@ -147,8 +163,12 @@ extension CollectionViewController: UICollectionViewDragDelegate {
 extension CollectionViewController: UICollectionViewDropDelegate {
     // ドロップ時のパスを取得&設定
     func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
-        guard let destinationIndexPath = coordinator.destinationIndexPath else { return }
+        guard var destinationIndexPath = coordinator.destinationIndexPath else { return }
                 
+        if destinationIndexPath.row == presenter.numberOfCells(section: destinationIndexPath.section) {
+            destinationIndexPath.row =  presenter.numberOfCells(section: destinationIndexPath.section) - 1
+        }
+        
         // 配列とセルの更新処理を呼び出し
         if coordinator.proposal.operation == .move {
             self.updateItem(coordinator: coordinator, destinationIndex: destinationIndexPath, collectionView: collectionView)
@@ -157,7 +177,14 @@ extension CollectionViewController: UICollectionViewDropDelegate {
     
     // ドロップ範囲の設定
     func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
-    
+        
+        // ドラッグ前の位置取得不可の場合
+        let destinationIndexPath = destinationIndexPath ?? IndexPath(row: 0, section: 0)
+        
+        // 「+」の場合
+        if collectionView.hasActiveDrag && destinationIndexPath.row >= presenter.numberOfCells(section: destinationIndexPath.section) {
+            return UICollectionViewDropProposal(operation: .forbidden)
+        }
         return UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
     }
 
@@ -175,7 +202,7 @@ private extension CollectionViewController {
         cell?.deleteImage()
         
         collectionView.performBatchUpdates({
-            presenter.dragAndDrop(dragPosition: sourceIndexPath, dropPosition: destinationIndex, data: "")
+            presenter.dragAndDrop(dragPosition: sourceIndexPath, dropPosition: destinationIndex)
         }, completion: { _ in
             // 意味なし
 //            collectionView.reloadItems(at: [destinationIndex])

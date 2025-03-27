@@ -26,7 +26,8 @@ extension CollectionCell {
         imageView.heroID =  id
     }
     
-    func setupCell(imageResource: ImageResource) {
+    func setupCell(namedImage: NamedImage) {
+        guard let imageResource = namedImage.resource else { return }
         imageView.image = UIImage(resource: imageResource)
     }
 }

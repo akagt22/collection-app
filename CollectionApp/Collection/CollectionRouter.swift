@@ -34,12 +34,13 @@ class CollectionRouter: CollectionWireframe {
     // MARK: func
     
     func presentImageViewController(imageData: NamedImage) {
-        guard let imageViewController = UIStoryboard(name: "ImageViewController", bundle: nil).instantiateInitialViewController() as? ImageViewController
+        guard let imageViewController = UIStoryboard(name: "ImageViewController", bundle: nil).instantiateInitialViewController() as? ImageViewController,
+              let imageResource = imageData.resource
         else {
             return
         }
         imageViewController.imageViewHeroID = imageData.name
-        imageViewController.imageResource = imageData.resource
+        imageViewController.imageResource = imageResource
         imageViewController.modalPresentationStyle = .fullScreen
         viewController?.present(imageViewController, animated: true)
     }

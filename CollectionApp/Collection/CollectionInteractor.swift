@@ -14,22 +14,38 @@ protocol CollectionUseCase: AnyObject {
 
     // MARK: func
     
-    func collectionArrayCount() -> Int
-    func collectionContent(index: Int) -> NamedImage
-    func indexOfCrossCell() -> Int
-    func insertCollectionContent(data: NamedImage, at row: Int)
-    func removeCollectionContent(at row: Int)
-    func replaceCollectionContent(from x: Int, to y: Int)
+    func collectionArrayCount(type: SectionType) -> Int
+    func collectionContent(index: Int, type: SectionType) -> NamedImage
+    func insertCollectionContent(data: NamedImage, at row: Int, type: SectionType)
+    func removeCollectionContent(at row: Int, type: SectionType)
+    func replaceCollectionContent(from x: Int, to y: Int, type: SectionType)
 }
 
 struct NamedImage {
-    let resource: ImageResource
-    let name: String
+    var resource: ImageResource? = nil
+    var name: String? = nil
+}
+
+enum SectionType: Int {
+    case favorite = 0
+    case normal = 1
+}
+
+extension SectionType {
+    var name: String {
+        switch self {
+        case .favorite:
+            return "お気に入り"
+        case .normal:
+            return "コレクション"
+        }
+    }
 }
 
 // MARK: UseCase (Presenter -> Interactor)
 
 class CollectionInteractor: CollectionUseCase {
+    
     // MARK: VIPER Properties
 
     weak var output: CollectionInteractorOutput?
@@ -41,37 +57,65 @@ class CollectionInteractor: CollectionUseCase {
     private var collectionArray: [NamedImage] = (0...10).map {
         NamedImage(resource: ImageResource(name: "image\($0)", bundle: .main), name: "Image\($0)")
     }
-
+    
+    private var favoriteCollectionArray: [NamedImage] = [NamedImage()]
+    
     // MARK: init
+    init() {
+        collectionArray.append(NamedImage())
+    }
 
     // MARK: deinit
 
     // MARK: func
     
-    func collectionArrayCount() -> Int {
-        return collectionArray.count
+    func collectionArrayCount(type: SectionType) -> Int {
+        switch type {
+        case .favorite:
+            return favoriteCollectionArray.count
+        case .normal:
+            return collectionArray.count
+        }
     }
     
-    func collectionContent(index: Int) -> NamedImage {
-        return collectionArray[index]
+    func collectionContent(index: Int, type: SectionType) -> NamedImage {
+        switch type {
+        case .favorite:
+            return favoriteCollectionArray[index]
+        case .normal:
+            return collectionArray[index]
+        }
     }
     
-    func indexOfCrossCell() -> Int {
-        return collectionArray.count - 1
+    func insertCollectionContent(data: NamedImage, at row: Int, type: SectionType) {
+        switch type {
+        case .favorite:
+            favoriteCollectionArray.insert(data, at: row)
+        case .normal:
+            collectionArray.insert(data, at: row)
+        }
     }
     
-    func insertCollectionContent(data: NamedImage, at row: Int) {
-        collectionArray.insert(data, at: row)
+    func removeCollectionContent(at row: Int, type: SectionType) {
+        switch type {
+        case .favorite:
+            favoriteCollectionArray.remove(at: row)
+        case .normal:
+            collectionArray.remove(at: row)
+        }
     }
     
-    func removeCollectionContent(at row: Int) {
-        collectionArray.remove(at: row)
-    }
-    
-    func replaceCollectionContent(from x: Int, to y: Int) {
-        let tmp = collectionArray[x]
-        collectionArray.remove(at: x)
-        collectionArray.insert(tmp, at: y)
+    func replaceCollectionContent(from x: Int, to y: Int, type: SectionType) {
+        switch type {
+        case .favorite:
+            let tmp = favoriteCollectionArray[x]
+            favoriteCollectionArray.remove(at: x)
+            favoriteCollectionArray.insert(tmp, at: y)
+        case .normal:
+            let tmp = collectionArray[x]
+            collectionArray.remove(at: x)
+            collectionArray.insert(tmp, at: y)
+        }
     }
 }
 
