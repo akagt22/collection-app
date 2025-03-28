@@ -32,7 +32,6 @@ final class CollectionViewController: UIViewController {
     @IBOutlet private var collectionView: UICollectionView! {
         didSet {
             let layout = UICollectionViewFlowLayout()
-            
             layout.headerReferenceSize = CGSize(width: collectionView.frame.width, height: 50)
             layout.minimumLineSpacing = spacing // 縦
             layout.minimumInteritemSpacing = spacing // 横
@@ -60,7 +59,7 @@ final class CollectionViewController: UIViewController {
     
     private let sectionInset: CGFloat = 8
     private let spacing: CGFloat = 16
-    private let rowNumber: CGFloat = 3
+    private let rowNumber: CGFloat = 4
 
     // MARK: init
     
@@ -107,7 +106,6 @@ extension CollectionViewController: CollectionView {
 }
 
 extension CollectionViewController: UICollectionViewDataSource {
-    
     // cellの数の指定
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
             return presenter.numberOfCells(section: section)
@@ -128,7 +126,6 @@ extension CollectionViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "CollectionHeader", for: indexPath) as? CollectionHeader else {
             return UICollectionReusableView()
         }
@@ -150,41 +147,51 @@ extension CollectionViewController: UICollectionViewDelegate {
     }
 }
 
-// ドラッグの設定
+// ドラッグ可能対象の決定
 extension CollectionViewController: UICollectionViewDragDelegate {
+    // ドラッグしようとした時
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
         // スケルトンセルはドラッグ不可
-        if indexPath.row >= presenter.numberOfCells(section: indexPath.section) { return [] }
+        if indexPath.row >= presenter.skeletonCellRow(section: indexPath.section)  { return [] }
+        let dragItem = UIDragItem(itemProvider: NSItemProvider())
+        dragItem.localObject = "abc"
+        
+        // ドラッグ可
         return [UIDragItem(itemProvider: NSItemProvider())]
     }
 }
 
-// ドロップの設定
+// ドロップ
 extension CollectionViewController: UICollectionViewDropDelegate {
-    // ドロップ時のパスを取得&設定
+    // cellを放した時
     func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
-        guard var destinationIndexPath = coordinator.destinationIndexPath else { return }
-                
-        if destinationIndexPath.row == presenter.numberOfCells(section: destinationIndexPath.section) {
-            destinationIndexPath.row =  presenter.numberOfCells(section: destinationIndexPath.section) - 1
+        guard var destinationIndexPath = coordinator.destinationIndexPath,
+              let item = coordinator.items.first,
+              let sourceIndexPath = item.sourceIndexPath else { return }
+        
+        
+        let skeletonRow = presenter.skeletonCellRow(section: destinationIndexPath.section)
+        
+        if skeletonRow > 0 && destinationIndexPath.row >= skeletonRow {
+            if destinationIndexPath.section == sourceIndexPath.section {
+                destinationIndexPath.row = skeletonRow - 1
+            } else {
+                destinationIndexPath.row = skeletonRow
+            }
         }
         
         // 配列とセルの更新処理を呼び出し
         if coordinator.proposal.operation == .move {
             self.updateItem(coordinator: coordinator, destinationIndex: destinationIndexPath, collectionView: collectionView)
+        } else if coordinator.proposal.operation == .forbidden {
+            print("forbidden")
         }
     }
     
-    // ドロップ範囲の設定
+    // cellをドロップ先の上に移動した時
     func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
         
-        // ドラッグ前の位置取得不可の場合
-        let destinationIndexPath = destinationIndexPath ?? IndexPath(row: 0, section: 0)
-        
-        // 「+」の場合
-        if collectionView.hasActiveDrag && destinationIndexPath.row >= presenter.numberOfCells(section: destinationIndexPath.section) {
-            return UICollectionViewDropProposal(operation: .forbidden)
-        }
+        // .move：移動、.insertAtDestinationIndexPath：ドラッグ＆ドロップで移動先に「挿入する」動作を明示的に指定
         return UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
     }
 
@@ -196,18 +203,21 @@ extension CollectionViewController: UICollectionViewDropDelegate {
 private extension CollectionViewController {
     func updateItem(coordinator: any UICollectionViewDropCoordinator, destinationIndex: IndexPath, collectionView: UICollectionView){
         guard let item = coordinator.items.first,
-              let sourceIndexPath = item.sourceIndexPath  else { return }
+              let sourceIndexPath = item.sourceIndexPath else { return }
         
+        // ドラッグ時に与えた情報取得
+        let movedData = item.dragItem.localObject as? String
+        
+        // チラつき防止
         let cell = collectionView.cellForItem(at: sourceIndexPath) as? CollectionCell
         cell?.deleteImage()
         
+        // performBatchUpdates：複数のセルの挿入・削除を行う際に使用する
         collectionView.performBatchUpdates({
             presenter.dragAndDrop(dragPosition: sourceIndexPath, dropPosition: destinationIndex)
-        }, completion: { _ in
-            // 意味なし
-//            collectionView.reloadItems(at: [destinationIndex])
         })
         
+        // ドロップ実行(ドロップアニメーション)
         coordinator.drop(item.dragItem, toItemAt: destinationIndex)
     }
 }

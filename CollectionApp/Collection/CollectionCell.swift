@@ -5,7 +5,6 @@
 //  Created by Okamoto Akihiro on 2025/01/28.
 //
 
-import Hero
 import UIKit
 
 class CollectionCell: UICollectionViewCell {

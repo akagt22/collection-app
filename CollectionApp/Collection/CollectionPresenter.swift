@@ -26,6 +26,7 @@ protocol CollectionPresentation: AnyObject {
     func numberOfCells(section: Int) -> Int
     func numberOfSection() -> Int
     func sectionName(section: Int) -> String
+    func skeletonCellRow(section: Int) -> Int
 }
 
 // MARK: InteractorOutput (Interactor -> Presenter)
@@ -97,6 +98,10 @@ class CollectionPresenter: CollectionPresentation {
     
     func sectionName(section: Int) -> String {
         return SectionType(rawValue: section)?.name ?? ""
+    }
+    
+    func skeletonCellRow(section: Int) -> Int {
+        return interactor.collectionArrayCount(type: SectionType(rawValue: section)!) - 1
     }
 }
 
